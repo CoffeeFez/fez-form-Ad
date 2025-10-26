@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل في FEZ Café</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <!-- إضافة مكتبة intl-tel-input -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+
+  <style>
+    :root {
+      --pink: #FF4081;
+      --bg: #FFCDD2;
+      --text: #222;
+      --muted: #555;
+      --white-transparent: rgba(255,255,255,0.95);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+    /* إضافة الـ animation للشعار */
+    @keyframes floatPulse {
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.05); }
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      direction: rtl;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-wrapper {
+      width: 90%;
+      max-width: 450px; /* زيادة العرض الأقصى */
+      background: var(--white-transparent);
+      border-radius: 18px;
+      box-shadow: 0 8px 28px rgba(31,38,135,0.12);
+      padding: 25px 20px; /* زيادة الـ padding */
+      text-align: center;
+    }
+
+    .logo {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(35px, 6vw, 65px); /* زيادة حجم الشعار */
+      letter-spacing: clamp(4px, 1.2vw, 10px);
+      margin-bottom: 5px; /* زيادة المسافة */
+      direction: ltr;
+    }
+    /* تعديل أنماط الشعار لإضافة الـ animation وتحسين الظل */
+    .logo span {
+      display: inline-block;
+      animation: floatPulse 3s ease-in-out infinite;
+    }
+    .logo .f {
+      color: var(--pink);
+      animation-delay: 0s;
+      text-shadow: 2px 2px 8px rgba(255,64,129,0.4);
+    }
+    .logo .e {
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.35);
+      animation-delay: 0.2s;
+    }
+    .logo .z {
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.35);
+      animation-delay: 0.4s;
+    }
+
+    .sub-logo {
+      font-size: clamp(14px, 1.8vw, 18px); /* زيادة حجم النص */
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 20px; /* زيادة المسافة */
+    }
+
+    .form-group {
+      margin-bottom: 15px; /* زيادة المسافة بين الحقول */
+      text-align: right;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px; /* زيادة المسافة */
+      font-weight: 700;
+      font-size: 15px; /* زيادة حجم الخط */
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 8px; /* زيادة الـ padding */
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px; /* زيادة حجم الخط */
+      direction: ltr;
+      height: 38px; /* زيادة الارتفاع */
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--pink);
+      outline: none;
+    }
+
+    .checkbox-group {
+      margin: 8px 0; /* تقليل المسافة */
+      text-align: right;
+    }
+    .checkbox-group label {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text);
+      font-size: 13px; /* تقليل حجم الخط */
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--pink);
+    }
+
+    .error-msg {
+      color: var(--pink);
+      font-size: 12px; /* تقليل حجم الخط */
+      margin-top: 2px; /* تقليل المسافة */
+      display: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 8px; /* تقليل الـ padding */
+      background-color: var(--pink);
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px; /* تقليل المسافة */
+      height: 36px; /* تحديد ارتفاع ثابت أقل */
+    }
+    .submit-btn:hover {
+      background-color: #e73370;
+    }
+
+    .form-note {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .success-message {
+      color: var(--pink);
+      font-size: 20px;
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      line-height: 1.6;
+    }
+    
+    /* إضافة نمط جديد للرسالة عند ظهورها وحدها */
+    .success-only {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+    
+    /* إضافة أيقونة أكبر للنجاح */
+    .success-icon {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+
+    /* أنماط إضافية لمكتبة الهاتف */
+    .iti {
+      width: 100%;
+      direction: ltr;
+    }
+    .iti__flag-container {
+      direction: ltr;
+    }
+    /* تعديل لتناسب التصميج الحالي */
+    .iti__selected-flag {
+      border-radius: 10px 0 0 10px;
+    }
+    .iti input {
+      border-radius: 10px;
+    }
+    /* تخصيص لون الحدوب عند التركيز */
+    .iti--focus .iti__selected-flag {
+      background-color: rgba(255, 64, 129, 0.05);
+    }
+    .iti input:focus {
+      border-color: var(--pink);
+      outline: none;
+    }
+    
+    /* تعديلات إضافية للتوافق مع RTL */
+    .phone-container {
+      direction: ltr;
+      text-align: left;
+    }
+    
+    .iti__country-list {
+      text-align: left;
+      direction: ltr;
+    }
+    
+    /* نمط للملاحظة تحت عنوان حقل المُرشِّح */
+    .referrer-note {
+      font-size: 12px; /* زيادة حجم الخط */
+      color: var(--muted);
+      margin-bottom: 4px; /* زيادة المسافة */
+      margin-top: -1px; /* تعديل الهامش السالب */
+      text-align: right;
+    }
+    
+    /* تعديل ارتفاع حقول الهاتف */
+    .iti input {
+      border-radius: 8px;
+      height: 38px; /* زيادة الارتفاع */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-wrapper">
+    <div class="logo">
+      <span class="f">F</span><span class="e">E</span><span class="z">Z</span>
+    </div>
+    <div class="sub-logo">SPECIALTY COFFEE</div>
+
+    <form id="registerForm" novalidate>
+      <div class="form-group">
+        <label for="name">الاسم </label>
+        <input type="text" id="name" name="name" placeholder="أدخل اسمك الكريم" required>
+        <div class="error-msg" id="error-name">يرجى إدخال الاسم</div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">رقم الهاتف</label>
+        <div class="phone-container">
+          <input type="tel" id="phone" name="phone" placeholder="أدخل رقم الهاتف" required>
+        </div>
+        <div class="error-msg" id="error-phone">يرجى إدخال رقم هاتف صحيح</div>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">الجنس</label>
+        <select id="gender" name="gender" required>
+          <option value="">اختر الجنس</option>
+          <option value="male">ذكر</option>
+          <option value="female">أنثى</option>
+        </select>
+        <div class="error-msg" id="error-gender">يرجى اختيار الجنس</div>
+      </div>
+
+      <!-- إضافة حقل رقم هاتف المُرشِّح -->
+      <div class="form-group">
+        <label for="referrer_phone"> كود الاحالة - إختيارى</label>
+        <div class="referrer-note">لتحصلوا على نقاط ترشيح إضافية 🎉</div>
+        <div class="phone-container">
+          <input type="tel" id="referrer_phone" name="referrer_phone" placeholder="أدخل رقم هاتف من رشّحك للكافيه">
+        </div>
+        <div class="error-msg" id="error-referrer_phone">يرجى إدخال رقم هاتف صحيح للمُرشِّح</div>
+        <div class="error-msg" id="error-same-phone">لا يمكن استخدام نفس رقم هاتفك كرقم للاحالة</div>
+      </div>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" id="terms" name="terms" required>
+          أوافق على <a href="terms.html" target="_blank">الشروط والأحكام</a>
+        </label>
+        <div class="error-msg" id="error-terms">مطلوب الموافقة على الشروط</div>
+      </div>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" id="offers" name="offers" checked>
+          أوافق على تلقي العروض الترويجية
+        </label>
+      </div>
+
+      <button type="submit" class="submit-btn">تسجيل الآن</button>
+
+      <div class="form-note">بياناتك آمنة ولن يتم مشاركتها.</div>
+    </form>
+    
+    <!-- تعديل رسالة النجاح لتكون خارج الفورم -->
+    <div class="success-message" id="successMsg">
+      <div class="success-icon">✅</div>
+      تم التسجيل بنجاح!<br>
+      شكرًا لانضمامك لعائلة FEZ ☕️
+    </div>
+  </div>
+
+  <!-- إضافة مكتبات JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js"></script>
+
+  <script>
+    // تهيئة مكتبة الهاتف الدولي
+    const phoneInput = document.querySelector("#phone");
+    const iti = window.intlTelInput(phoneInput, {
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
+      initialCountry: "sa", // السعودية كدولة افتراضية
+      preferredCountries: ["sa", "eg", "ae", "kw", "bh", "qa", "om"], // الدول المفضلة في المقدمة
+      separateDialCode: true, // عرض كود الدولة منفصلاً
+      autoPlaceholder: "aggressive", // تلميح تلقائي حسب الدولة
+      customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+        return "أدخل " + selectedCountryPlaceholder;
+      },
+      // تعديل نصوص القائمة للغة العربية
+      i18n: {
+        search: "بحث",
+        searchPlaceholder: "بحث عن دولة..."
+      }
+    });
+    
+    // تهيئة مكتبة الهاتف الدولي لحقل المُرشِّح
+    const referrerPhoneInput = document.querySelector("#referrer_phone");
+    const itiReferrer = window.intlTelInput(referrerPhoneInput, {
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
+      initialCountry: "sa",
+      preferredCountries: ["sa", "eg", "ae", "kw", "bh", "qa", "om"],
+      separateDialCode: true,
+      autoPlaceholder: "aggressive",
+      customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+        return "أدخل " + selectedCountryPlaceholder;
+      },
+      i18n: {
+        search: "بحث",
+        searchPlaceholder: "بحث عن دولة..."
+      }
+    });
+    
+    // إضافة تعديل لتحسين تجربة المستخدم مع اللغة العربية
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('iti__search-input')) {
+        e.target.style.textAlign = 'left';
+        e.target.style.direction = 'ltr';
+      }
+    });
+
+    // مثال بسيط للتحقق مبدئي
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // مسح أي أخطاء سابقة
+      document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+
+      let valid = true;
+      const name = document.getElementById('name').value.trim();
+      const gender = document.getElementById('gender').value;
+      const terms = document.getElementById('terms').checked;
+
+      // التحقق من الاسم والجنس والشروط
+      if (!name) {
+        valid = false;
+        document.getElementById('error-name').style.display = 'block';
+      }
+      if (!gender) {
+        valid = false;
+        document.getElementById('error-gender').style.display = 'block';
+      }
+      if (!terms) {
+        valid = false;
+        document.getElementById('error-terms').style.display = 'block';
+      }
+
+      // التحقق من رقم الهاتف باستخدام المكتبة
+      if (!iti.isValidNumber()) {
+        valid = false;
+        document.getElementById('error-phone').textContent = 'يرجى إدخال رقم هاتف صحيح للدولة المختارة';
+        document.getElementById('error-phone').style.display = 'block';
+      }
+
+      // الحصول على الرقم بالتنسيق الدولي
+      const fullPhone = iti.getNumber();
+
+      // التحقق من رقم هاتف المُرشِّح إذا تم إدخاله
+      let referrerPhone = '';
+      if (referrerPhoneInput.value.trim() !== '') {
+        if (!itiReferrer.isValidNumber()) {
+          valid = false;
+          document.getElementById('error-referrer_phone').style.display = 'block';
+        } else {
+          referrerPhone = itiReferrer.getNumber();
+          
+          // التحقق من أن رقم المُرشِّح مختلف عن رقم المستخدم
+          if (referrerPhone === fullPhone) {
+            valid = false;
+            document.getElementById('error-same-phone').style.display = 'block';
+          }
+        }
+      }
+
+      if (!valid) return;
+
+      // بيانات للتجربة
+      const data = {
+        name,
+        phone: fullPhone,
+        gender,
+        referrer_phone: referrerPhone,
+        accept_terms: terms,
+        accept_offers: document.getElementById('offers').checked
+      };
+      
+      console.log("Sending data:", data);
+      
+      // إرسال البيانات عبر webhook
+      fetch('https://amr319.shop/webhook-test/form-ad', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        
+        // إخفاء الفورم وإظهار رسالة النجاح
+        document.getElementById('registerForm').style.display = 'none';
+        const successMsg = document.getElementById('successMsg');
+        successMsg.style.display = 'block';
+        
+        // إضافة فئة للرسالة لتظهر في المنتصف
+        successMsg.classList.add('success-only');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // في حالة حدوث خطأ، نظهر رسالة النجاح على أي حال
+        // يمكن تعديل هذا السلوك حسب الحاجة
+        document.getElementById('registerForm').style.display = 'none';
+        const successMsg = document.getElementById('successMsg');
+        successMsg.style.display = 'block';
+        successMsg.classList.add('success-only');
+      });
+    });
+  </script>
+</body>
+</html>
