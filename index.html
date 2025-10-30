@@ -382,15 +382,41 @@
         document.getElementById('error-terms').style.display = 'block';
       }
 
-      // التحقق من رقم الهاتف باستخدام المكتبة
-      if (!iti.isValidNumber()) {
+      // التحقق من رقم الهاتف باستخدام المكتبة مع إضافة دعم للأرقام السعودية التي تبدأ بـ 574
+      const phoneVal = phoneInput.value.replace(/\D+/g, ''); // إزالة أي فواصل أو رموز
+      const countryData = iti.getSelectedCountryData();
+      
+      // التحقق من صحة الرقم - إما عبر المكتبة أو عبر التحقق اليدوي للأرقام السعودية الخاصة
+      let isValidSaudiNumber = false;
+      
+      // التحقق من الأرقام السعودية التي تبدأ بـ 574
+      if (countryData.iso2 === 'sa' && 
+          (phoneVal.startsWith('574') || // إذا كان الرقم يبدأ بـ 574 مباشرة
+           phoneVal.startsWith('0574') || // إذا كان يبدأ بـ 0574
+           phoneVal.startsWith('574', phoneVal.length - 9))) { // إذا كان آخر 9 أرقام تبدأ بـ 574
+        
+        // التحقق من طول الرقم (9 أرقام بدون الصفر الأول)
+        const localNumber = phoneVal.replace(/^0+/, ''); // إزالة الأصفار في البداية
+        if (localNumber.length === 9) {
+          isValidSaudiNumber = true;
+        }
+      }
+      
+      if (!iti.isValidNumber() && !isValidSaudiNumber) {
         valid = false;
         document.getElementById('error-phone').textContent = 'يرجى إدخال رقم هاتف صحيح للدولة المختارة';
         document.getElementById('error-phone').style.display = 'block';
       }
 
-      // الحصول على الرقم بالتنسيق الدولي
-      const fullPhone = iti.getNumber();
+      // الحصول على الرقم بالتنسيق الدولي أو تنسيقه يدويًا للأرقام السعودية الخاصة
+      let fullPhone;
+      if (isValidSaudiNumber) {
+        // تنسيق الرقم السعودي يدويًا
+        const localNumber = phoneVal.replace(/^0+/, ''); // إزالة الأصفار في البداية
+        fullPhone = '+966' + localNumber;
+      } else {
+        fullPhone = iti.getNumber();
+      }
 
       // التحقق من رقم هاتف المُرشِّح إذا تم إدخاله
       let referrerPhone = '';
