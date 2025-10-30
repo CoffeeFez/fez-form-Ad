@@ -7,7 +7,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <!-- إضافة مكتبة intl-tel-input -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
 
   <style>
     :root {
@@ -310,14 +310,14 @@
   </div>
 
   <!-- إضافة مكتبات JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"></script>
 
   <script>
     // تهيئة مكتبة الهاتف الدولي
     const phoneInput = document.querySelector("#phone");
     const iti = window.intlTelInput(phoneInput, {
-      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js",
       initialCountry: "sa", // السعودية كدولة افتراضية
       preferredCountries: ["sa", "eg", "ae", "kw", "bh", "qa", "om"], // الدول المفضلة في المقدمة
       separateDialCode: true, // عرض كود الدولة منفصلاً
@@ -335,7 +335,7 @@
     // تهيئة مكتبة الهاتف الدولي لحقل المُرشِّح
     const referrerPhoneInput = document.querySelector("#referrer_phone");
     const itiReferrer = window.intlTelInput(referrerPhoneInput, {
-      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js",
       initialCountry: "sa",
       preferredCountries: ["sa", "eg", "ae", "kw", "bh", "qa", "om"],
       separateDialCode: true,
