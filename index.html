@@ -418,23 +418,44 @@
         fullPhone = iti.getNumber();
       }
 
-      // التحقق من رقم هاتف المُرشِّح إذا تم إدخاله
-      let referrerPhone = '';
-      if (referrerPhoneInput.value.trim() !== '') {
-        if (!itiReferrer.isValidNumber()) {
-          valid = false;
-          document.getElementById('error-referrer_phone').style.display = 'block';
-        } else {
-          referrerPhone = itiReferrer.getNumber();
-          
-          // التحقق من أن رقم المُرشِّح مختلف عن رقم المستخدم
-          if (referrerPhone === fullPhone) {
-            valid = false;
-            document.getElementById('error-same-phone').style.display = 'block';
-          }
-        }
-      }
+// التحقق من رقم هاتف المُرشِّح إذا تم إدخاله
+let referrerPhone = '';
+if (referrerPhoneInput.value.trim() !== '') {
+  const refPhoneVal = referrerPhoneInput.value.replace(/\D+/g, ''); // إزالة الرموز
+  const refCountryData = itiReferrer.getSelectedCountryData();
 
+  // نفس التحقق اليدوي للأرقام السعودية الخاصة
+  let isValidRefSaudiNumber = false;
+  if (refCountryData.iso2 === 'sa' && 
+      (refPhoneVal.startsWith('574') ||
+       refPhoneVal.startsWith('0574') ||
+       refPhoneVal.startsWith('574', refPhoneVal.length - 9))) {
+    const localRefNumber = refPhoneVal.replace(/^0+/, '');
+    if (localRefNumber.length === 9) {
+      isValidRefSaudiNumber = true;
+    }
+  }
+
+  // التحقق
+  if (!itiReferrer.isValidNumber() && !isValidRefSaudiNumber) {
+    valid = false;
+    document.getElementById('error-referrer_phone').style.display = 'block';
+  } else {
+    // تنسيق الرقم
+    if (isValidRefSaudiNumber) {
+      const localRefNumber = refPhoneVal.replace(/^0+/, '');
+      referrerPhone = '+966' + localRefNumber;
+    } else {
+      referrerPhone = itiReferrer.getNumber();
+    }
+
+    // التحقق من أن رقم المُرشِّح مختلف عن رقم المستخدم
+    if (referrerPhone === fullPhone) {
+      valid = false;
+      document.getElementById('error-same-phone').style.display = 'block';
+    }
+  }
+}
       if (!valid) return;
 
       // بيانات للتجربة
