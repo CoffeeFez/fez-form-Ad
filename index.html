@@ -309,6 +309,54 @@
     </div>
   </div>
 
+  
+  <input type="hidden" id="token" value="">
+  <script>
+  async function validateToken() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+  
+      if (!token) {
+          document.body.innerHTML = "<h2>❌ رابط غير صالح</h2>";
+          return;
+      }
+  
+      try {
+          const res = await fetch(`https://amr319.shop/webhook-test/validate-ad?token=${token}`);
+          const data = await res.json();
+  
+          console.log("Validation response:", data);
+  
+          if (!data.valid) {
+              document.body.innerHTML = `<h2>❌ ${data.message}</h2>`;
+              return;
+          }
+          // التوكن صالح → نخزنه في العنصر المخفي
+          document.getElementById("token").value = token;
+  
+          // لو وصلنا هنا → التوكن صالح
+          const form = document.getElementById("form-container");
+          if (!form) {
+              document.body.innerHTML = "<h2>❌ خطأ: form-container غير موجود</h2>";
+              return;
+          }
+  
+          form.style.display = "block";
+  
+      } catch (err) {
+          console.error(err);
+          document.body.innerHTML = "<h2>❌ خطأ فى الاتصال بالخادم</h2>";
+      }
+  }
+  
+  window.onload = validateToken;
+  </script>
+
+
+
+
+
+  
   <!-- إضافة مكتبات JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"></script>
