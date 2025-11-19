@@ -415,6 +415,7 @@
       const name = document.getElementById('name').value.trim();
       const gender = document.getElementById('gender').value;
       const terms = document.getElementById('terms').checked;
+      const token = document.getElementById('token').value;
 
       // التحقق من الاسم والجنس والشروط
       if (!name) {
@@ -513,7 +514,8 @@ if (referrerPhoneInput.value.trim() !== '') {
         gender,
         referrer_phone: referrerPhone,
         accept_terms: terms,
-        accept_offers: document.getElementById('offers').checked
+        accept_offers: document.getElementById('offers').checked,
+        token
       };
       
       console.log("Sending data:", data);
