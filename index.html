@@ -271,7 +271,8 @@
       </div>
       
 
-      /*إضافة حقل رقم هاتف المُرشِّح */
+      <!-- إضافة حقل رقم هاتف المُرشِّح -->
+      <!-- DISABLED: تم تعطيل حقل المُرشِّح مؤقتاً
       <div class="form-group">
         <label for="referrer_phone"> كود الاحالة - إختيارى</label>
         <div class="referrer-note">لتحصلوا على نقاط ترشيح إضافية 🎉</div>
@@ -281,6 +282,10 @@
         <div class="error-msg" id="error-referrer_phone">يرجى إدخال رقم هاتف صحيح للمُرشِّح</div>
         <div class="error-msg" id="error-same-phone">لا يمكن استخدام نفس رقم هاتفك كرقم للاحالة</div>
       </div>
+      -->
+      
+      <!-- حقل مخفي لحفظ توافق الكود -->
+      <input type="hidden" id="referrer_phone" value="">
 
       
       <div class="checkbox-group">
@@ -383,6 +388,8 @@
     });
     
     // تهيئة مكتبة الهاتف الدولي لحقل المُرشِّح
+    // DISABLED: تم تعطيل مكتبة الهاتف للمُرشِّح
+    /*
     const referrerPhoneInput = document.querySelector("#referrer_phone");
     const itiReferrer = window.intlTelInput(referrerPhoneInput, {
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js",
@@ -398,6 +405,7 @@
         searchPlaceholder: "بحث عن دولة..."
       }
     });
+    */
     
     // إضافة تعديل لتحسين تجربة المستخدم مع اللغة العربية
     document.addEventListener('click', function(e) {
@@ -470,7 +478,9 @@
       }
 
 // التحقق من رقم هاتف المُرشِّح إذا تم إدخاله
-let referrerPhone = '';
+// DISABLED: تم تعطيل التحقق من رقم المُرشِّح
+let referrerPhone = ''; // سيكون فارغاً دائماً
+/*
 if (referrerPhoneInput.value.trim() !== '') {
   const refPhoneVal = referrerPhoneInput.value.replace(/\D+/g, ''); // إزالة الرموز
   const refCountryData = itiReferrer.getSelectedCountryData();
@@ -507,6 +517,7 @@ if (referrerPhoneInput.value.trim() !== '') {
     }
   }
 }
+*/
       if (!valid) return;
 
       // بيانات للتجربة
